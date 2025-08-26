@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 10:14:34 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/22 17:50:02 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/26 12:53:08 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_philo
 	int					nbr_meals;
 	bool				full;
 	pthread_mutex_t		left_fork;
-	pthread_mutex_t		*right_fork;
+	pthread_mutex_t		right_fork;
 	t_data				*data;
 	pthread_t			thread;
 }						t_philo;
@@ -46,7 +46,9 @@ typedef struct s_data
 	int					must_eat;
 	long				start_simulation;
 	bool				end_simulation;
+	bool				dead;
 	t_philo				philo[200];
+	pthread_mutex_t		print;
 }						t_data;
 
 long					ft_atol(const char *nptr);
