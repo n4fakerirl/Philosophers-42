@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 14:14:34 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/26 13:05:51 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/08/26 17:01:22 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,5 @@ int	parsing(char **av, t_data *data)
 		data->must_eat = -1;
 	if (data->nbr_philo > 200)
 		return (error_exit("200 Philosophers maximum.", data), 0);
-	data->dead = false;
-	pthread_mutex_init(&data->print, NULL);
 	return (1);
 }
