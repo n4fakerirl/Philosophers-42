@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 10:14:34 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/26 16:38:46 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/01 15:27:39 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,17 @@ typedef struct s_data
 	long				time_to_think;
 	int					must_eat;
 	long				start_simulation;
-	bool				end_simulation;
 	bool				dead;
 	t_philo				philo[200];
 	pthread_mutex_t		print;
 	pthread_mutex_t		death;
 	pthread_mutex_t		meal;
+	pthread_mutex_t		lastmeal;
 	pthread_t			monitor;
 }						t_data;
 
+long					get_time_in_ms(void);
+int						is_dead(t_data *data);
 long					ft_atol(const char *nptr);
 void					error_exit(char *message, t_data *data);
 int						parsing(char **av, t_data *data);
