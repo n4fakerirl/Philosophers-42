@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 18:00:37 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/01 19:46:46 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/01 20:11:32 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,20 @@ void	eating(t_philo *philo)
 		if (philo->nbr_meals == philo->data->must_eat)
 		{
 			philo->full = true;
+			pthread_mutex_lock(&philo->data->meal);
 			philo->data->all_full++;
+			pthread_mutex_unlock(&philo->data->meal);
+			while (1)
+			{
+				if (is_dead(philo->data) == 1)
+				{
+					pthread_mutex_unlock(&philo->data->lastmeal);
+					pthread_mutex_unlock(philo->right_fork);
+					pthread_mutex_unlock(&philo->left_fork);
+					return ;
+				}
+				usleep(500);
+			}
 		}
 	}
 	pthread_mutex_unlock(&philo->data->lastmeal);

@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 10:22:27 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/01 19:43:35 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/01 20:07:04 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ void	*philo_routine(void *arg)
 	if (philo->data->nbr_philo == 1)
 		return (one_philo(philo), NULL);
 	if (philo->id % 2 == 0)
-		usleep(philo->data->time_to_eat);
+		usleep(5000);
 	while (!is_dead(philo->data))
 	{
-		if (is_dead(philo->data) == 1)
-			break ;
 		take_fork(philo);
 		if (is_dead(philo->data) == 1)
 			break ;

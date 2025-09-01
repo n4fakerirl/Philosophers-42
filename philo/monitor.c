@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 18:04:30 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/01 19:50:25 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/01 20:01:46 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,33 @@ void	*monitor_routine(void *arg)
 {
 	t_data	*data;
 	int		i;
+	int		full_count;
 
 	data = (t_data *)arg;
+	i = 0;
+	full_count = 0;
 	while (!is_dead(data))
 	{
 		i = 0;
 		while (i < data->nbr_philo && !is_dead(data))
 		{
 			check_philo(data, &data->philo[i]);
-			if (is_dead(data) == 1)
+			if (is_dead(data))
 				break ;
 			i++;
 		}
-		if (data->all_full == data->nbr_philo)
+		if (data->must_eat != -1)
 		{
-			pthread_mutex_lock(&data->death);
-			data->dead = true;
-			pthread_mutex_unlock(&data->death);
-			break ;
+			pthread_mutex_lock(&data->meal);
+			full_count = data->all_full;
+			pthread_mutex_unlock(&data->meal);
+			if (full_count >= data->nbr_philo)
+			{
+				pthread_mutex_lock(&data->death);
+				data->dead = true;
+				pthread_mutex_unlock(&data->death);
+				break ;
+			}
 		}
 		usleep(500);
 	}
