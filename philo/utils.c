@@ -6,42 +6,61 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 15:37:48 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/22 17:33:27 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/01 18:03:54 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-long	ft_atol(const char *nptr)
+void	timesleep(long time, t_data *data)
 {
-	int		sign;
-	long	result;
-	int		i;
+	long	sleep;
 
-	sign = 1;
-	i = 0;
-	result = 0;
-	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == 32)
-		i++;
-	if (nptr[i] == '-' || nptr[i] == '+')
+	sleep = get_time_in_ms();
+	while (1)
 	{
-		if (nptr[i + 1] < '0' || nptr[i + 1] > '9')
-			return (-1);
-		if (nptr[i] == '-')
-			sign *= -1;
-		i++;
+		if (is_dead(data) == 1)
+			break ;
+		if (get_time_in_ms() - sleep >= time)
+			break ;
+		usleep(50);
 	}
-	while (nptr[i] >= '0' && nptr[i] <= '9')
-	{
-		result = result * 10 + (nptr[i] - '0');
-		i++;
-	}
-	return (result * sign);
 }
 
-void	error_exit(char *message, t_data *data)
+long	get_time_in_ms(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	safe_printf(t_data *data, t_philo *philo, char *message)
+{
+	long	time;
+
+	if (!is_dead(data))
+	{
+		pthread_mutex_lock(&data->print);
+		time = get_time_in_ms();
+		printf("%lu %d %s\n", time - philo->data->start_simulation, philo->id,
+			message);
+		pthread_mutex_unlock(&data->print);
+	}
+}
+
+void	printf_dead(t_data *data, t_philo *philo, char *message)
+{
+	long	time;
+
+	pthread_mutex_lock(&data->print);
+	time = get_time_in_ms();
+	printf("%lu %d %s\n", time - philo->data->start_simulation, philo->id,
+		message);
+	pthread_mutex_unlock(&data->print);
+}
+
+void	error_exit(char *message)
 {
 	printf("Error\n%s\n", message);
-	if (data != NULL)
-		free(data);
 }
