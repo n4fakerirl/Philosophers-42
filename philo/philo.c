@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 10:22:27 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/01 15:23:21 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:02:50 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,30 +92,43 @@ void	one_philo(t_philo *philo)
 
 void	thinking(t_philo *philo)
 {
-	philo->data->time_to_think = philo->data->time_to_die
-		- philo->data->time_to_sleep - philo->data->time_to_eat - 10;
+	long	think_time;
+
+	think_time = philo->data->time_to_die - philo->data->time_to_sleep
+		- philo->data->time_to_eat;
 	safe_printf(philo->data, philo, "is thinking");
-	timesleep(philo->data->time_to_think, philo->data);
+	timesleep(think_time, philo->data);
 }
 
 void	check_philo(t_data *data, t_philo *philo)
 {
+	long	current_time;
+	long	meal;
+
 	pthread_mutex_lock(&data->lastmeal);
+	current_time = get_time_in_ms();
+	meal = philo->last_meal;
+	pthread_mutex_unlock(&data->lastmeal);
 	if (get_time_in_ms() - philo->last_meal >= data->time_to_die)
 	{
 		pthread_mutex_lock(&data->death);
-		safe_printf(data, philo, "died");
-		data->dead = true;
+		if (!data->dead)
+		{
+			data->dead = true;
+			safe_printf(data, philo, "died");
+		}
 		pthread_mutex_unlock(&data->death);
 	}
-	pthread_mutex_unlock(&data->lastmeal);
 }
 
 int	is_dead(t_data *data)
 {
 	pthread_mutex_lock(&data->death);
 	if (data->dead == true)
+	{
+		pthread_mutex_unlock(&data->death);
 		return (1);
+	}
 	pthread_mutex_unlock(&data->death);
 	return (0);
 }
@@ -126,7 +139,7 @@ void	*monitor_routine(void *arg)
 	int		i;
 
 	data = (t_data *)arg;
-	while (data->dead == false)
+	while (!is_dead(data))
 	{
 		i = 0;
 		while (i < data->nbr_philo && !data->dead)

@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 14:14:34 by ocviller          #+#    #+#             */
-/*   Updated: 2025/08/26 17:01:22 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/01 16:19:51 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ int	parsing(char **av, t_data *data)
 	if (check_args(av[1], data))
 		data->nbr_philo = ft_atol(av[1]);
 	if (check_args(av[2], data))
-		data->time_to_die = ft_atol(av[2]) * 1000;
+		data->time_to_die = ft_atol(av[2]);
 	if (check_args(av[3], data))
-		data->time_to_eat = ft_atol(av[3]) * 1000;
+		data->time_to_eat = ft_atol(av[3]);
 	if (check_args(av[4], data))
-		data->time_to_sleep = ft_atol(av[4]) * 1000;
+		data->time_to_sleep = ft_atol(av[4]);
 	if (av[5] && av[5][0] != '\0')
 	{
 		if (check_args(av[5], data))
