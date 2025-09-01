@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 10:14:34 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/01 15:27:39 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/01 19:42:40 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_data
 	int					must_eat;
 	long				start_simulation;
 	bool				dead;
+	int					all_full;
 	t_philo				philo[200];
 	pthread_mutex_t		print;
 	pthread_mutex_t		death;
@@ -54,10 +55,26 @@ typedef struct s_data
 	pthread_t			monitor;
 }						t_data;
 
-long					get_time_in_ms(void);
-int						is_dead(t_data *data);
+void					thinking(t_philo *philo);
+void					one_philo(t_philo *philo);
+void					destroy_all(t_data *data);
+void					sleeping(t_philo *philo);
+void					eating(t_philo *philo);
+void					take_fork(t_philo *philo);
 long					ft_atol(const char *nptr);
-void					error_exit(char *message, t_data *data);
+void					error_exit(char *message);
 int						parsing(char **av, t_data *data);
+int						parsing2(char **av, t_data *data);
+int						check_args(char *av);
+int						ft_isdigit(char c);
+void					printf_dead(t_data *data, t_philo *philo,
+							char *message);
+void					safe_printf(t_data *data, t_philo *philo,
+							char *message);
+long					get_time_in_ms(void);
+void					timesleep(long time, t_data *data);
+void					check_philo(t_data *data, t_philo *philo);
+int						is_dead(t_data *data);
+void					*monitor_routine(void *arg);
 
 #endif

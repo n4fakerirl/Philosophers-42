@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 10:22:27 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/01 18:29:21 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/01 19:43:35 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->data->nbr_philo == 1)
-		return (one_philo(philo), arg);
+		return (one_philo(philo), NULL);
 	if (philo->id % 2 == 0)
 		usleep(philo->data->time_to_eat);
-	while (!philo->data->dead)
+	while (!is_dead(philo->data))
 	{
 		if (is_dead(philo->data) == 1)
 			break ;
@@ -72,6 +72,8 @@ int	create_thread(t_data *data)
 		data->philo[i].id = i + 1;
 		data->philo[i].data = data;
 		data->philo[i].last_meal = data->start_simulation;
+		data->philo[i].nbr_meals = 0;
+		data->philo[i].full = false;
 		if (pthread_create(&data->philo[i].thread, NULL, philo_routine,
 				&data->philo[i]) != 0)
 		{

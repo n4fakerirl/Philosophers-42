@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 14:14:34 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/01 18:03:08 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/01 19:42:59 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,9 @@ int	parsing2(char **av, t_data *data)
 
 int	parsing(char **av, t_data *data)
 {
-	int	exit;
-
-	exit = 0;
 	memset(data, 0, sizeof(t_data));
+	if (!av[1][0] || !av[2][0] || !av[3][0] ||!av[4][0])
+		return (0);
 	if (check_args(av[1]))
 		data->nbr_philo = ft_atol(av[1]);
 	else
