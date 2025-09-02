@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 18:04:30 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/01 20:01:46 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/02 17:14:25 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,12 @@ void	*monitor_routine(void *arg)
 			{
 				pthread_mutex_lock(&data->death);
 				data->dead = true;
+				printf("EVERYONE IS FULL\n");
 				pthread_mutex_unlock(&data->death);
 				break ;
 			}
 		}
-		usleep(500);
+		usleep(1000);
 	}
 	return (NULL);
 }

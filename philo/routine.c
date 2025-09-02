@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 18:00:37 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/01 20:11:32 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/02 17:13:11 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	eating(t_philo *philo)
 	safe_printf(philo->data, philo, "is eating");
 	pthread_mutex_lock(&philo->data->lastmeal);
 	philo->last_meal = get_time_in_ms();
+	pthread_mutex_unlock(&philo->data->lastmeal);
 	if (philo->data->must_eat != -1)
 	{
 		philo->nbr_meals++;
@@ -44,23 +45,16 @@ void	eating(t_philo *philo)
 			pthread_mutex_lock(&philo->data->meal);
 			philo->data->all_full++;
 			pthread_mutex_unlock(&philo->data->meal);
-			while (1)
-			{
-				if (is_dead(philo->data) == 1)
-				{
-					pthread_mutex_unlock(&philo->data->lastmeal);
-					pthread_mutex_unlock(philo->right_fork);
-					pthread_mutex_unlock(&philo->left_fork);
-					return ;
-				}
-				usleep(500);
-			}
 		}
 	}
-	pthread_mutex_unlock(&philo->data->lastmeal);
 	timesleep(philo->data->time_to_eat, philo->data);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(&philo->left_fork);
+	if (philo->full)
+	{
+		while (!is_dead(philo->data))
+			usleep(500);
+	}
 }
 
 void	sleeping(t_philo *philo)
@@ -81,12 +75,11 @@ void	thinking(t_philo *philo)
 {
 	long	ttk;
 
-	ttk = philo->data->time_to_die - philo->data->time_to_eat
-		- philo->data->time_to_sleep;
+	ttk = (philo->data->time_to_die - philo->data->time_to_eat
+			- philo->data->time_to_sleep) / 2;
 	if (ttk < 0)
 		ttk = 0;
 	safe_printf(philo->data, philo, "is thinking");
-	if (ttk > 100)
-		ttk -= 100;
-	timesleep(ttk, philo->data);
+	if (ttk > 0)
+		timesleep(ttk, philo->data);
 }
