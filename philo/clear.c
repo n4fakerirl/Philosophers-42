@@ -6,11 +6,11 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 18:22:39 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/02 17:18:15 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:53:30 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 void	destroy_all(t_data *data)
 {

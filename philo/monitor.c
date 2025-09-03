@@ -6,11 +6,11 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 18:04:30 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/02 17:14:25 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:53:24 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 void	check_philo(t_data *data, t_philo *philo)
 {
@@ -47,15 +47,31 @@ int	is_dead(t_data *data)
 	return (0);
 }
 
+int	must_eat(t_data *data)
+{
+	int	full_count;
+
+	full_count = 0;
+	pthread_mutex_lock(&data->meal);
+	full_count = data->all_full;
+	pthread_mutex_unlock(&data->meal);
+	if (full_count >= data->nbr_philo)
+	{
+		pthread_mutex_lock(&data->death);
+		data->dead = true;
+		pthread_mutex_unlock(&data->death);
+		return (0);
+	}
+	return (1);
+}
+
 void	*monitor_routine(void *arg)
 {
 	t_data	*data;
 	int		i;
-	int		full_count;
 
 	data = (t_data *)arg;
 	i = 0;
-	full_count = 0;
 	while (!is_dead(data))
 	{
 		i = 0;
@@ -68,17 +84,8 @@ void	*monitor_routine(void *arg)
 		}
 		if (data->must_eat != -1)
 		{
-			pthread_mutex_lock(&data->meal);
-			full_count = data->all_full;
-			pthread_mutex_unlock(&data->meal);
-			if (full_count >= data->nbr_philo)
-			{
-				pthread_mutex_lock(&data->death);
-				data->dead = true;
-				printf("EVERYONE IS FULL\n");
-				pthread_mutex_unlock(&data->death);
+			if (!must_eat(data))
 				break ;
-			}
 		}
 		usleep(1000);
 	}

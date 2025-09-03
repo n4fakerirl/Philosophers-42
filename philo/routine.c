@@ -6,11 +6,11 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 18:00:37 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/02 17:13:11 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:53:45 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 void	take_fork(t_philo *philo)
 {
@@ -27,6 +27,11 @@ void	take_fork(t_philo *philo)
 		safe_printf(philo->data, philo, "has taken a fork");
 		pthread_mutex_lock(&philo->left_fork);
 		safe_printf(philo->data, philo, "has taken a fork");
+	}
+	if (is_dead(philo->data))
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(&philo->left_fork);
 	}
 }
 

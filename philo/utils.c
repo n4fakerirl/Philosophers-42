@@ -6,11 +6,11 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 15:37:48 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/01 18:03:54 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:53:47 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 void	timesleep(long time, t_data *data)
 {

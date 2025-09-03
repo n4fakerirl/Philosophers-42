@@ -6,11 +6,11 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 14:14:34 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/01 19:42:59 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:53:34 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 long	ft_atol(const char *nptr)
 {
@@ -89,7 +89,7 @@ int	parsing2(char **av, t_data *data)
 int	parsing(char **av, t_data *data)
 {
 	memset(data, 0, sizeof(t_data));
-	if (!av[1][0] || !av[2][0] || !av[3][0] ||!av[4][0])
+	if (!av[1][0] || !av[2][0] || !av[3][0] || !av[4][0])
 		return (0);
 	if (check_args(av[1]))
 		data->nbr_philo = ft_atol(av[1]);
@@ -106,6 +106,8 @@ int	parsing(char **av, t_data *data)
 	}
 	else
 		data->must_eat = -1;
+	if (data->nbr_philo < 1)
+		return (error_exit("1 Philosopher minimum."), 0);
 	if (data->nbr_philo > 200)
 		return (error_exit("200 Philosophers maximum."), 0);
 	return (1);

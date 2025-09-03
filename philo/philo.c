@@ -6,20 +6,25 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 10:22:27 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/02 17:20:12 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/03 14:53:38 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
+
+void	check_meal(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->lastmeal);
+	philo->last_meal = get_time_in_ms();
+	pthread_mutex_unlock(&philo->data->lastmeal);
+}
 
 void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	pthread_mutex_lock(&philo->data->lastmeal);
-	philo->last_meal = get_time_in_ms();
-	pthread_mutex_unlock(&philo->data->lastmeal);
+	check_meal(philo);
 	if (philo->data->nbr_philo == 1)
 		return (one_philo(philo), NULL);
 	if (philo->id % 2 == 0)
