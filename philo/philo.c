@@ -6,17 +6,22 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 10:22:27 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/03 14:53:38 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/03 17:31:55 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	check_meal(t_philo *philo)
+int	check_meal(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->lastmeal);
 	philo->last_meal = get_time_in_ms();
 	pthread_mutex_unlock(&philo->data->lastmeal);
+	if (philo->data->nbr_philo == 1)
+		return (one_philo(philo), 0);
+	if (philo->id % 2 == 0)
+		usleep(philo->data->time_to_eat * 500);
+	return (1);
 }
 
 void	*philo_routine(void *arg)
@@ -24,21 +29,22 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	check_meal(philo);
-	if (philo->data->nbr_philo == 1)
-		return (one_philo(philo), NULL);
-	if (philo->id % 2 == 0)
-		usleep(philo->data->time_to_eat * 500);
+	if (!check_meal(philo))
+		return (NULL);
 	while (!is_dead(philo->data))
 	{
-		take_fork(philo);
-		if (is_dead(philo->data) == 1)
+		if (!take_fork(philo))
 			break ;
-		eating(philo);
-		if (is_dead(philo->data) == 1)
+		if (is_dead(philo->data))
+		{
+			pthread_mutex_unlock(philo->right_fork);
+			pthread_mutex_unlock(&philo->left_fork);
+			break ;
+		}
+		if (eating(philo), is_dead(philo->data))
 			break ;
 		sleeping(philo);
-		if (is_dead(philo->data) == 1)
+		if (is_dead(philo->data))
 			break ;
 		thinking(philo);
 	}

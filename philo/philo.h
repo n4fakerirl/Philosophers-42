@@ -6,7 +6,7 @@
 /*   By: ocviller <ocviller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 10:14:34 by ocviller          #+#    #+#             */
-/*   Updated: 2025/09/01 19:42:40 by ocviller         ###   ########.fr       */
+/*   Updated: 2025/09/03 17:26:09 by ocviller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void					one_philo(t_philo *philo);
 void					destroy_all(t_data *data);
 void					sleeping(t_philo *philo);
 void					eating(t_philo *philo);
-void					take_fork(t_philo *philo);
+int						take_fork(t_philo *philo);
 long					ft_atol(const char *nptr);
 void					error_exit(char *message);
 int						parsing(char **av, t_data *data);
