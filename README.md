@@ -7,7 +7,7 @@ Le but est de gérer correctement plusieurs threads (philosophes) qui partagent 
 
 ---
 
-## 🧠 Fonctionnement général
+## 🧠 Fonctionnement
 
 * Chaque philosophe est un thread
 * Les fourchettes sont des mutex partagés
